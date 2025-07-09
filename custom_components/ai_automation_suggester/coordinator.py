@@ -68,6 +68,11 @@ from .const import (  # noqa: E501
     CONF_CUSTOM_OPENAI_API_KEY,
     CONF_CUSTOM_OPENAI_MODEL,
     CONF_CUSTOM_OPENAI_TEMPERATURE,
+    CONF_CLOUDRU_API_KEY,
+    CONF_CLOUDRU_PROJECT_ID,
+    CONF_CLOUDRU_MODEL,
+    CONF_CLOUDRU_TEMPERATURE,
+    ENDPOINT_CLOUDRU,
     CONF_MISTRAL_API_KEY,
     CONF_MISTRAL_MODEL,
     CONF_MISTRAL_TEMPERATURE,
@@ -107,7 +112,6 @@ If asked to focus on a theme (energy saving, presence lighting, etc.), integrate
 Also review existing automations and propose improvements.
 If you see a lot of text in a different language, focus on it for a translation for your output.
 """
-
 
 # =============================================================================
 # Coordinator
@@ -154,7 +158,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         self.area_registry: ar.AreaRegistry | None = None
 
     # ---------------------------------------------------------------------
-    # Utility – options‑first lookup
+    # Utility – options‑first lookup
     # ---------------------------------------------------------------------
     def _opt(self, key: str, default=None):
         """
@@ -441,6 +445,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "LocalAI": self._localai,
                 "Ollama": self._ollama,
                 "Custom OpenAI": self._custom_openai,
+                "Cloud.ru": self._cloudru,
                 "Mistral AI": self._mistral,
                 "Perplexity AI": self._perplexity,
                 "OpenRouter": self._openrouter,
@@ -495,21 +500,21 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"OpenAI processing error: {str(err)}"
             _LOGGER.error(self._last_error)
@@ -621,25 +626,25 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "content" not in res:
                 raise ValueError(f"Response missing 'content' array: {res}")
-                
+
             if not res["content"] or not isinstance(res["content"], list):
                 raise ValueError(f"Empty or invalid 'content' array: {res}")
-                
+
             if "text" not in res["content"][0]:
                 raise ValueError(f"First choice missing 'text': {res['content'][0]}")
-                       
+
             return res["content"][0]["text"]
-        
+
         except Exception as err:
             self._last_error = f"Anthropic processing error: {str(err)}"
             _LOGGER.error(self._last_error)
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in Anthropic API call:")
             return None
-                
+
 
     # ---------------- Google ---------------------------------------------------
     async def _google(self, prompt: str) -> str | None:
@@ -678,35 +683,35 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "candidates" not in res:
                 raise ValueError(f"Response missing 'candidates' array: {res}")
-                
+
             if not res["candidates"] or not isinstance(res["candidates"], list):
                 raise ValueError(f"Empty or invalid 'candidates' array: {res}")
-                
+
             if "content" not in res["candidates"][0]:
                 raise ValueError(f"First choice missing 'content': {res['candidates'][0]}")
-                
+
             if "parts" not in res["candidates"][0]["content"]:
                 raise ValueError(f"content missing 'parts': {res['candidates'][0]['message']}")
-            
+
             if not res["candidates"][0]["content"]["parts"] or not isinstance(res["candidates"][0]["content"]["parts"], list):
                 raise ValueError(f"Empty or invalid 'parts' array: {res['candidates'][0]['content']}")
-            
+
             if "text" not in res["candidates"][0]["content"]["parts"][0]:
                 raise ValueError(f"parts missing 'text': {res['candidates'][0]['content']['parts']}")
-            
-                
+
+
             return res["candidates"][0]["content"]["parts"][0]["text"]
-        
+
         except Exception as err:
             self._last_error = f"Google processing error: {str(err)}"
             _LOGGER.error(self._last_error)
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in Google API call:")
             return None
-                
+
     # ---------------- Groq -----------------------------------------------------
     async def _groq(self, prompt: str) -> str | None:
         try:
@@ -745,21 +750,21 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"Groq processing error: {str(err)}"
             _LOGGER.error(self._last_error)
@@ -803,21 +808,21 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"LocalAI processing error: {str(err)}"
             _LOGGER.error(self._last_error)
@@ -870,20 +875,20 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "message" not in res:
                 raise ValueError(f"Response missing 'message' array: {res}")
-                
+
             if "content" not in res["message"]:
                 raise ValueError(f"Message missing 'content': {res['message']}")
-                
+
             return res["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"Ollama processing error: {str(err)}"
             _LOGGER.error(self._last_error)
             # Log stack trace for unexpected errors
-            _LOGGER.exception("Unexpected error in Ollama API call:")            
+            _LOGGER.exception("Unexpected error in Ollama API call:")
             return None
 
     # ---------------- Custom‑endpoint OpenAI -------------------------------
@@ -892,7 +897,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             endpoint = self._opt(CONF_CUSTOM_OPENAI_ENDPOINT) + "/v1/chat/completions"
             if not endpoint:
                 raise ValueError("Custom OpenAI endpoint not configured")
-            
+
             if not endpoint.endswith("/v1/chat/completions"):
                 endpoint = endpoint.rstrip("/") + "/v1/chat/completions"
 
@@ -922,31 +927,92 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                     )
                     _LOGGER.error(self._last_error)
                     return None
-                
+
                 res = await resp.json()
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"Custom OpenAI processing error: {str(err)}"
             _LOGGER.error(self._last_error)
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in Custom OpenAI API call:")
+            return None
+
+    # ---------------- Cloud.ru Foundation Models ---------------------------
+    async def _cloudru(self, prompt: str) -> str | None:
+        try:
+            api_key = self._opt(CONF_CLOUDRU_API_KEY)
+            project_id = self._opt(CONF_CLOUDRU_PROJECT_ID)
+            model = self._opt(CONF_CLOUDRU_MODEL, DEFAULT_MODELS["Cloud.ru"])
+            temperature = self._opt(CONF_CLOUDRU_TEMPERATURE, DEFAULT_TEMPERATURE)
+            in_budget, out_budget = self._budgets()
+            if not api_key or not project_id:
+                raise ValueError("Cloud.ru API key or project ID not configured")
+
+            if len(prompt) // 4 > in_budget:
+                prompt = prompt[: in_budget * 4]
+
+            headers = {
+                "x-project-id": project_id,
+                "x-api-key": api_key,
+                "Content-Type": "application/json",
+            }
+            body = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": out_budget,
+                "temperature": temperature,
+            }
+
+            async with self.session.post(
+                ENDPOINT_CLOUDRU, headers=headers, json=body
+            ) as resp:
+                if resp.status != 200:
+                    self._last_error = (
+                        f"Cloud.ru error {resp.status}: {await resp.text()}"
+                    )
+                    _LOGGER.error(self._last_error)
+                    return None
+
+                res = await resp.json()
+
+            if not isinstance(res, dict):
+                raise ValueError(f"Unexpected response format: {res}")
+
+            if "choices" not in res:
+                raise ValueError(f"Response missing 'choices' array: {res}")
+
+            if not res["choices"] or not isinstance(res["choices"], list):
+                raise ValueError(f"Empty or invalid 'choices' array: {res}")
+
+            if "message" not in res["choices"][0]:
+                raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
+
+            if "content" not in res["choices"][0]["message"]:
+                raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
+
+            return res["choices"][0]["message"]["content"]
+
+        except Exception as err:
+            self._last_error = f"Cloud.ru processing error: {str(err)}"
+            _LOGGER.error(self._last_error)
+            _LOGGER.exception("Unexpected error in Cloud.ru API call:")
             return None
 
     # ---------------- Mistral ----------------------------------------------
@@ -985,21 +1051,21 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"Mistral processing error: {str(err)}"
             _LOGGER.error(self._last_error)
@@ -1045,21 +1111,21 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
+
             if "choices" not in res:
                 raise ValueError(f"Response missing 'choices' array: {res}")
-                
+
             if not res["choices"] or not isinstance(res["choices"], list):
                 raise ValueError(f"Empty or invalid 'choices' array: {res}")
-                
+
             if "message" not in res["choices"][0]:
                 raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
-                
+
             if "content" not in res["choices"][0]["message"]:
                 raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
-                
+
             return res["choices"][0]["message"]["content"]
-        
+
         except Exception as err:
             self._last_error = f"Perplexity processing error: {str(err)}"
             _LOGGER.error(self._last_error)

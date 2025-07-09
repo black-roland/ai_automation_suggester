@@ -15,7 +15,7 @@ INTEGRATION_NAME = "AI Automation Suggester"
 CONF_MAX_TOKENS = "max_tokens"
 DEFAULT_MAX_TOKENS = 500  # legacy default – used for both budgets if new keys absent
 
-# New, separate knobs (Issue #91)
+# New, separate knobs (Issue #91)
 CONF_MAX_INPUT_TOKENS = "max_input_tokens"  # how much of the prompt we keep
 CONF_MAX_OUTPUT_TOKENS = "max_output_tokens"  # how long the AI response may be
 
@@ -81,6 +81,12 @@ CONF_CUSTOM_OPENAI_API_KEY = "custom_openai_api_key"
 CONF_CUSTOM_OPENAI_MODEL = "custom_openai_model"
 CONF_CUSTOM_OPENAI_TEMPERATURE = "custom_openai_temperature"
 
+# Cloud.ru
+CONF_CLOUDRU_PROJECT_ID = "cloudru_project_id"
+CONF_CLOUDRU_API_KEY = "cloudru_api_key"
+CONF_CLOUDRU_MODEL = "cloudru_model"
+CONF_CLOUDRU_TEMPERATURE = "cloudru_temperature"
+
 # Mistral AI
 CONF_MISTRAL_API_KEY = "mistral_api_key"
 CONF_MISTRAL_MODEL = "mistral_model"
@@ -115,6 +121,7 @@ DEFAULT_MODELS = {
     "LocalAI": "llama3",
     "Ollama": "llama2",
     "Custom OpenAI": "gpt-3.5-turbo",
+    "Cloud.ru": "Qwen/Qwen2.5-Coder-32B-Instruct",
     "Mistral AI": "mistral-medium",
     "Perplexity AI": "sonar",
     "OpenRouter": "meta-llama/llama-4-maverick:free",
@@ -145,10 +152,10 @@ ENDPOINT_GOOGLE = "https://generativelanguage.googleapis.com/v1beta2/models/{mod
 ENDPOINT_GROQ = "https://api.groq.com/openai/v1/chat/completions"
 ENDPOINT_LOCALAI = "{protocol}://{ip_address}:{port}/v1/chat/completions"
 ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
+ENDPOINT_CLOUDRU = "https://foundation-models.api.cloud.ru/api/gigacube/openai/v1/chat/completions"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
-
 
 # ─────────────────────────────────────────────────────────────
 # Sensor Keys
