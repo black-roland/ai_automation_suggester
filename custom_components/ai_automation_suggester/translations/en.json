@@ -84,6 +84,17 @@
           "max_output_tokens": "Max Output Tokens"
         }
       },
+      "cloudru": {
+        "title": "Configure Cloud.ru",
+        "data": {
+          "cloudru_api_key": "Cloud.ru API Key",
+          "cloudru_project_id": "Cloud.ru Project ID",
+          "cloudru_model": "Cloud.ru Model",
+          "cloudru_temperature": "Temperature",
+          "max_input_tokens": "Max Input Tokens",
+          "max_output_tokens": "Max Output Tokens"
+        }
+      },
       "mistral": {
         "title": "Configure Mistral AI",
         "data": {
@@ -169,6 +180,10 @@
           "custom_openai_api_key": "Custom OpenAI API Key",
           "custom_openai_model": "Custom OpenAI Model",
           "custom_openai_temperature": "Temperature (Custom OpenAI)",
+          "cloudru_api_key": "Cloud.ru API Key",
+          "cloudru_project_id": "Cloud.ru Project ID",
+          "cloudru_model": "Cloud.ru Model",
+          "cloudru_temperature": "Temperature (Cloud.ru)",
           "mistral_api_key": "Mistral API Key",
           "mistral_model": "Mistral Model",
           "mistral_temperature": "Temperature (Mistral AI)",
