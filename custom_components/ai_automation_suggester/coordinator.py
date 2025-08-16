@@ -111,6 +111,7 @@ For each entity:
 If asked to focus on a theme (energy saving, presence lighting, etc.), integrate it.
 Also review existing automations and propose improvements.
 If you see a lot of text in a different language, focus on it for a translation for your output.
+Отвечай на русском языке.
 """
 
 # =============================================================================
