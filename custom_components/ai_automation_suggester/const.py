@@ -121,7 +121,7 @@ DEFAULT_MODELS = {
     "LocalAI": "llama3",
     "Ollama": "llama2",
     "Custom OpenAI": "gpt-3.5-turbo",
-    "Cloud.ru": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "Cloud.ru": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
     "Mistral AI": "mistral-medium",
     "Perplexity AI": "sonar",
     "OpenRouter": "meta-llama/llama-4-maverick:free",
@@ -152,7 +152,7 @@ ENDPOINT_GOOGLE = "https://generativelanguage.googleapis.com/v1beta2/models/{mod
 ENDPOINT_GROQ = "https://api.groq.com/openai/v1/chat/completions"
 ENDPOINT_LOCALAI = "{protocol}://{ip_address}:{port}/v1/chat/completions"
 ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
-ENDPOINT_CLOUDRU = "https://foundation-models.api.cloud.ru/api/gigacube/openai/v1/chat/completions"
+ENDPOINT_CLOUDRU = "https://foundation-models.api.cloud.ru/v1/chat/completions"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"

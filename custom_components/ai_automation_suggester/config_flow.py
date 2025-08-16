@@ -161,7 +161,7 @@ class ProviderValidator:
             "Content-Type": "application/json",
         }
         try:
-            resp = await self.session.get("https://foundation-models.api.cloud.ru/api/gigacube/openai/v1/models", headers=hdr)
+            resp = await self.session.get("https://foundation-models.api.cloud.ru/v1/models", headers=hdr)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
