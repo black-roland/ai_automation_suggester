@@ -107,7 +107,7 @@ Leveraging the AI Automation Suggester provides several key benefits:
 * **Persistent Notifications:** Receive suggestions directly in your Home Assistant interface.
 * **Service Call Integration:** Manually trigger suggestions via the `ai_automation_suggester.generate_suggestions` service with full parameter control.
 * **Diagnostics Sensors:** Monitor suggestion status and provider connection health.
-* **Example Automations:** Includes built-in examples for new entity detection and weekly reviews.
+* **Example Automations:** Includes built-in examples for new entity detection and weekly reviews. - This is found in the code base
 * **Dashboard-Friendly Output:** Sensor attributes provide description and YAML blocks ready for Lovelace cards.
 
 ---
@@ -335,6 +335,7 @@ Monitor these sensors to ensure the integration is functioning correctly.
 * **API Costs:** Some cloud providers charge for API usage based on tokens processed. Be mindful of this and use features like `entity_limit` and scheduled run frequency to manage potential costs. Monitor your provider's billing.
 * **No Guarantees:** The AI's suggestions are based on patterns and logical inference from the data provided. They are not guaranteed to be perfect or the most efficient solution for every scenario. **Always review suggestions thoroughly before implementing them in your live system.**
 * **AI Limitations:** Large language models can sometimes hallucinate or provide illogical suggestions. Use your judgment and knowledge of your home setup when reviewing.
+* **Home Assistant dependency safety:** This integration uses plain HTTP calls and does not need the Python `openai` package. Avoid installing or pinning `openai` in your HA environment, as mismatched SDK versions can break the official OpenAI Conversation integration.
 
 ---
 
