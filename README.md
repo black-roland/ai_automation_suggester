@@ -6,7 +6,7 @@
 - Поддержка моделей из [Cloud.ru Foundation Models](https://cloud.ru/marketplace/ai-ml) (Qwen, GPT-OSS и другие).
 - Ответы на русском языке по умолчанию.
 - Настройка Project ID и API-ключа Cloud.ru через интерфейс Home Assistant.
-- Модель по умолчанию: `Qwen/Qwen3-Coder-480B-A35B-Instruct`.
+- Модель по умолчанию: `Qwen/Qwen3-Coder-Next`.
 
 ## Подробности
 

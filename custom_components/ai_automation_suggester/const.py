@@ -129,7 +129,7 @@ DEFAULT_MODELS = {
     "LocalAI": "llama3",
     "Ollama": "llama2",
     "Custom OpenAI": "gpt-3.5-turbo",
-    "Cloud.ru": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "Cloud.ru": "Qwen/Qwen3-Coder-Next",
     "Mistral AI": "mistral-medium",
     "Perplexity AI": "sonar",
     "OpenRouter": "meta-llama/llama-4-maverick:free",
